@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="styles/attire.css">
+        <script type="text/javascript" src="scripts/jquery.js"></script>
+        <script type="text/javascript" src="scripts/socket.io.js"></script>
+        <script type="text/javascript" src="scripts/ui.js"></script>
+    </head>
+    <body onload="ui.onload()">
+        
+        <div id="masterContainer">
+            <div id="headerPanel">
+                <div class="headerTab" onclick="ui.showTab('cryptoPrices')">Crypto Prices</div>
+                <div class="headerTab" onclick="ui.showTab('tradeCalculator')">P&ampL Calculator</div>
+            </div>
+            <div id="centerPanel">
+                <!-- Crypto Prices tab -->
+                <div id="cryptoPrices" class="tabContentHolder" >
+                    <div class="sectionHeader">Prices across exchanges</div>
+                    
+                </div>
+                <!-- Crypto Prices tab ends-->
+                <!-- Trade calculator tab -->
+                <div id="tradeCalculator" class="tabContentHolder">
+                    <div class="sectionHeader">P&amp;L Calculator</div>
+                    <div class="baseWidget">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>Price in satoshis</td><td><input type="text"/></td>
+                                    <td>Quantity</td><td><input type="text"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Trade calculator tab ends -->
+            </div>
+        </div>
+        
+    </body>
+</html>

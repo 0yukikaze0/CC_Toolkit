@@ -1,0 +1,7 @@
+{
+    "app" : {
+        "contextRoot" : "",
+        "port" : 9086,
+        "socketPort" : 9087
+    }
+}
