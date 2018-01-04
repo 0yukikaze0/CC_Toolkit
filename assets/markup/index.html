@@ -1,8 +1,9 @@
 <html>
     <head>
         <link rel="stylesheet" href="styles/attire.css">
-        <script type="text/javascript" src="scripts/jquery.js"></script>
-        <script type="text/javascript" src="scripts/socket.io.js"></script>
+        <script type="text/javascript" src="scripts/lib/jquery.js"></script>
+        <script type="text/javascript" src="scripts/lib/socket.io.js"></script>
+        <script type="text/javascript" src="scripts/lib/vue.js"></script>
         <script type="text/javascript" src="scripts/ui.js"></script>
     </head>
     <body onload="ui.onload()">
@@ -22,20 +23,133 @@
                 <!-- Trade calculator tab -->
                 <div id="tradeCalculator" class="tabContentHolder">
                     <div class="sectionHeader">P&amp;L Calculator</div>
-                    <div class="baseWidget">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td>Price in satoshis</td><td><input type="text"/></td>
-                                    <td>Quantity</td><td><input type="text"/></td>
-                                </tr>
-                            </tbody>
-                        </table>
+
+                    <!-- P&L Calculation widget -->
+                    <div id="plCalcWidget">
+                        <div class="sectionContainer">
+                            <div class="baseWidget">
+                                <div class="widgetSectionHeader"> <span class="headerTitle">Buy Order</span> </div>
+                                <div class="widgetContent">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>Price in satoshis</td><td><input type="text" id="priceInSatoshis" v-model="buyPriceInSatoshis"/></td>
+                                                <td>Quantity</td><td><input type="text" id="quantity" v-model="quantity"/></td>
+                                                <td>Buy fee %</td> <td> <input type="text" id="buyFee" v-model="buyFee" /> </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="widgetSectionHeader"> <span class="headerTitle">Sell Order</span> </div>
+                                <div class="widgetContent">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>Price in satoshis</td> <td> <input type="text" id="priceInSatoshis" v-model="sellPriceInSatoshis" /> </td>
+                                                <td>Quantity</td> <td> <input type="text" id="sellQuantity" v-model="sellQuantity" /> </td>
+                                                <td>Sell fee %</td> <td> <input type="text" id="sellFee" v-model="sellFee" /> </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sectionContainer">
+
+                            <!-- Buy widget -->
+                            <div class="baseWidget">
+                                <div class="widgetSectionHeader"><span class="headerTitle">Buy</span></div>
+                                <div class="widgetContent">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>Buy Order :</td>
+                                                <td>
+                                                    <span>${quantity} @ ${buyPriceInSatoshis}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total (Satoshis)</td>
+                                                <td>
+                                                    <span>${quantity * buyPriceInSatoshis}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total (BTC)</td>
+                                                <td>
+                                                    <span>${(quantity * buyPriceInSatoshis) / denom }</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Fee @ ${buyFee}%</td>
+                                                <td>
+                                                    <span>${buy.fee}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Payable (BTC)</td>
+                                                <td>
+                                                    <span>${buy.totalPayable / denom}</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- Buy widget ends-->
+
+                            <!-- Sell widget -->
+                            <div class="baseWidget">
+                                <div class="widgetSectionHeader">
+                                    <span class="headerTitle">Sell</span>
+                                </div>
+                                <div class="widgetContent">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>Sell Order :</td>
+                                                <td>
+                                                    <span>${sellQuantity} @ ${sellPriceInSatoshis}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total (Satoshis)</td>
+                                                <td>
+                                                    <span>${sellQuantity * sellPriceInSatoshis}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total (BTC)</td>
+                                                <td>
+                                                    <span>${(sellQuantity * sellPriceInSatoshis) / denom }</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Fee @ ${sellFee}%</td>
+                                                <td>
+                                                    <span>${sell.fee}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Receivable (BTC)</td>
+                                                <td>
+                                                    <span>${sell.totalReceivable / denom}</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- Buy widget ends-->
+
+                        </div>
                     </div>
+                    <!-- P&L Calculation widget ends -->
+
                 </div>
                 <!-- Trade calculator tab ends -->
             </div>
         </div>
-        
+        <script src="scripts/controller.js"></script>
     </body>
 </html>
