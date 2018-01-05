@@ -16,6 +16,12 @@ let plCalc = new Vue({
         sell: {
             fee : 0,
             totalReceivable : 0
+        },
+        pl: {
+            profit : 0,
+            profitPercent : 0,
+            loss : 0,
+            lossPercent : 0
         }
     },
     watch: {
@@ -42,11 +48,31 @@ let plCalc = new Vue({
         calculateBuy : () => {
             plCalc.buy.fee = parseInt((plCalc.buyPriceInSatoshis * plCalc.quantity) * (plCalc.buyFee / 100));
             plCalc.buy.totalPayable = plCalc.buy.fee + (plCalc.buyPriceInSatoshis * plCalc.quantity);
+            plCalc.calculateBreakEven();
         },
         calculateSell : () => {
-            console.log('calc')
             plCalc.sell.fee = parseInt((plCalc.sellPriceInSatoshis * plCalc.sellQuantity) * (plCalc.sellFee / 100));
             plCalc.sell.totalReceivable = (plCalc.sellPriceInSatoshis * plCalc.sellQuantity) - plCalc.sell.fee;
+            plCalc.calculatePL();
+        },
+        calculatePL : () => {
+            let profit = plCalc.sell.totalReceivable - plCalc.buy.totalPayable;
+            if(profit >= 0){
+                plCalc.pl.profit = profit;
+                plCalc.pl.profitPercent = parseFloat((profit / plCalc.buy.totalPayable) * 100).toFixed(2);
+                plCalc.pl.loss = 0;
+                plCalc.pl.lossPercent = 0;
+            } else {
+                plCalc.pl.loss = profit;
+                plCalc.pl.lossPercent = parseFloat((profit / plCalc.buy.totalPayable) * 100).toFixed(2);
+                plCalc.pl.profit = 0;
+                plCalc.pl.profitPercent = 0;
+            }
+        },
+        calculateBreakEven : () => {
+            let breakEvenSell = plCalc.buy.totalPayable + 1;
+            let breakEvenPrice = parseInt(breakEvenSell / plCalc.quantity) - plCalc.buyPriceInSatoshis;
+            
         }
     }
 })

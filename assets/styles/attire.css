@@ -133,6 +133,9 @@ html, body {
 
 .headerTitle{
     padding: 0px 20px 0px 20px;
+    font-weight: 100;
+    font-size: 25px;
+    color: #969696;
 }
 
 .widgetContent{

@@ -28,23 +28,19 @@
                     <div id="plCalcWidget">
                         <div class="sectionContainer">
                             <div class="baseWidget">
-                                <div class="widgetSectionHeader"> <span class="headerTitle">Buy Order</span> </div>
                                 <div class="widgetContent">
                                     <table>
                                         <tbody>
                                             <tr>
+                                                <td style="padding:0;"></td>
+                                                <td><span class="headerTitle">Buy Order > </span></td>
                                                 <td>Price in satoshis</td><td><input type="text" id="priceInSatoshis" v-model="buyPriceInSatoshis"/></td>
                                                 <td>Quantity</td><td><input type="text" id="quantity" v-model="quantity"/></td>
                                                 <td>Buy fee %</td> <td> <input type="text" id="buyFee" v-model="buyFee" /> </td>
                                             </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="widgetSectionHeader"> <span class="headerTitle">Sell Order</span> </div>
-                                <div class="widgetContent">
-                                    <table>
-                                        <tbody>
                                             <tr>
+                                                <td style="padding:0;"></td>
+                                                <td> <span class="headerTitle">Sell Order > </span> </td>
                                                 <td>Price in satoshis</td> <td> <input type="text" id="priceInSatoshis" v-model="sellPriceInSatoshis" /> </td>
                                                 <td>Quantity</td> <td> <input type="text" id="sellQuantity" v-model="sellQuantity" /> </td>
                                                 <td>Sell fee %</td> <td> <input type="text" id="sellFee" v-model="sellFee" /> </td>
@@ -140,7 +136,45 @@
                                     </table>
                                 </div>
                             </div>
-                            <!-- Buy widget ends-->
+                            <!-- Sell widget ends-->
+
+                            <!-- P&L widget -->
+                            <div class="baseWidget">
+                                <div class="widgetSectionHeader">
+                                    <span class="headerTitle">P&amp;L</span>
+                                </div>
+                                <div class="widgetContent">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>Profit (Satoshis):</td>
+                                                <td>
+                                                    <span>${pl.profit}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Profit Percentage :</td>
+                                                <td>
+                                                    <span>${pl.profitPercent}%</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Loss (Satoshis):</td>
+                                                <td>
+                                                    <span>${pl.loss}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Loss Percentage :</td>
+                                                <td>
+                                                    <span>${pl.lossPercent}%</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- P&L ends-->
 
                         </div>
                     </div>
