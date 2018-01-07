@@ -142,11 +142,27 @@ html, body {
     padding: 20px;
 }
 
-.widgetContent table td{
+.dataGrid td{
     padding: 5px 10px 5px 10px;
     font-size: 12px;
     font-weight: 400;
 }
-.widgetContent table td:nth-child(odd){
+.dataGrid td:nth-child(odd){
     background-color: #f1f1f1;
+}
+
+.highlightRed{
+    width: 100%;
+    height: 100%;
+    background-color: #ff1f1f;
+    padding: 5px;
+    color: #ffffff;
+}
+
+.highlightGreen{
+    width: 100%;
+    height: 100%;
+    background-color: #1bc34f;
+    padding: 5px;
+    color: #ffffff;
 }

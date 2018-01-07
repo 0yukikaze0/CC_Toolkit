@@ -3,6 +3,7 @@ let plCalc = new Vue({
     delimiters: ['${','}'],
     data: {
         denom: 100000000,
+        breakEvenPrice : 0,
         buyPriceInSatoshis: 0,
         quantity: 0,
         buyFee: 0.25,
@@ -22,7 +23,8 @@ let plCalc = new Vue({
             profitPercent : 0,
             loss : 0,
             lossPercent : 0
-        }
+        },
+        recommendations: []
     },
     watch: {
         buyPriceInSatoshis : () => {
@@ -48,7 +50,9 @@ let plCalc = new Vue({
         calculateBuy : () => {
             plCalc.buy.fee = parseInt((plCalc.buyPriceInSatoshis * plCalc.quantity) * (plCalc.buyFee / 100));
             plCalc.buy.totalPayable = plCalc.buy.fee + (plCalc.buyPriceInSatoshis * plCalc.quantity);
+            plCalc.sellQuantity = plCalc.quantity;
             plCalc.calculateBreakEven();
+            plCalc.buildRecommendations();
         },
         calculateSell : () => {
             plCalc.sell.fee = parseInt((plCalc.sellPriceInSatoshis * plCalc.sellQuantity) * (plCalc.sellFee / 100));
@@ -63,15 +67,42 @@ let plCalc = new Vue({
                 plCalc.pl.loss = 0;
                 plCalc.pl.lossPercent = 0;
             } else {
-                plCalc.pl.loss = profit;
-                plCalc.pl.lossPercent = parseFloat((profit / plCalc.buy.totalPayable) * 100).toFixed(2);
+                plCalc.pl.loss = Math.abs(profit);
+                plCalc.pl.lossPercent = Math.abs(parseFloat((profit / plCalc.buy.totalPayable) * 100).toFixed(2));
                 plCalc.pl.profit = 0;
                 plCalc.pl.profitPercent = 0;
             }
         },
         calculateBreakEven : () => {
-            let breakEvenSell = plCalc.buy.totalPayable + 1;
-            let breakEvenPrice = parseInt(breakEvenSell / plCalc.quantity) - plCalc.buyPriceInSatoshis;
+            let breakEvenIncrement = Math.ceil(((plCalc.buy.totalPayable + plCalc.buy.fee) / plCalc.quantity) - plCalc.buyPriceInSatoshis);
+            if(!isNaN(breakEvenIncrement)){
+                plCalc.sellPriceInSatoshis = parseInt(plCalc.buyPriceInSatoshis) + breakEvenIncrement;
+                plCalc.breakEvenPrice = parseInt(plCalc.buyPriceInSatoshis) + breakEvenIncrement;
+            }
+        },
+        buildRecommendations : () => {
+            plCalc.recommendations = [];
+            if(plCalc.quantity > 0){
+                let target = 10;
+                while(target <= 100){
+
+                    /**
+                     * -> Get target slice of x%
+                     * -> Target yield = totalPaid + slice
+                     * -> Calculate fee
+                     */
+                    let slice = plCalc.buy.totalPayable * (target / 100);
+                    let targetYield = plCalc.buy.totalPayable + slice;
+                    let yieldFee = parseInt(targetYield * (plCalc.sellFee/100));
+                    
+                    let targetPrice = parseInt((targetYield + yieldFee) / plCalc.quantity);
+                    let fee = parseInt((targetPrice * plCalc.quantity) * (plCalc.sellFee/100));
+
+                    plCalc.recommendations.push({price: targetPrice, yield: (targetPrice * plCalc.quantity) - fee, percent: target});
+                    target += 10;
+                }
+                
+            }
             
         }
     }

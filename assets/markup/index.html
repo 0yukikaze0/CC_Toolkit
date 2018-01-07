@@ -56,7 +56,7 @@
                             <div class="baseWidget">
                                 <div class="widgetSectionHeader"><span class="headerTitle">Buy</span></div>
                                 <div class="widgetContent">
-                                    <table>
+                                    <table class="dataGrid">
                                         <tbody>
                                             <tr>
                                                 <td>Buy Order :</td>
@@ -83,6 +83,12 @@
                                                 </td>
                                             </tr>
                                             <tr>
+                                                <td>Total Payable (Satoshis)</td>
+                                                <td>
+                                                    <span>${buy.totalPayable}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td>Total Payable (BTC)</td>
                                                 <td>
                                                     <span>${buy.totalPayable / denom}</span>
@@ -100,7 +106,7 @@
                                     <span class="headerTitle">Sell</span>
                                 </div>
                                 <div class="widgetContent">
-                                    <table>
+                                    <table class="dataGrid">
                                         <tbody>
                                             <tr>
                                                 <td>Sell Order :</td>
@@ -127,6 +133,12 @@
                                                 </td>
                                             </tr>
                                             <tr>
+                                                <td>Total Receivable (Satoshis)</td>
+                                                <td>
+                                                    <span>${sell.totalReceivable}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td>Total Receivable (BTC)</td>
                                                 <td>
                                                     <span>${sell.totalReceivable / denom}</span>
@@ -144,30 +156,40 @@
                                     <span class="headerTitle">P&amp;L</span>
                                 </div>
                                 <div class="widgetContent">
-                                    <table>
+                                    <table class="dataGrid">
                                         <tbody>
                                             <tr>
                                                 <td>Profit (Satoshis):</td>
                                                 <td>
-                                                    <span>${pl.profit}</span>
+                                                    <span class="highlightGreen" v-if="pl.profit > 0">${pl.profit}</span>
+                                                    <span v-else>${pl.profit}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Profit Percentage :</td>
                                                 <td>
-                                                    <span>${pl.profitPercent}%</span>
+                                                    <span class="highlightGreen" v-if="pl.profitPercent > 0">${pl.profitPercent}%</span>
+                                                    <span v-else>${pl.profitPercent}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Loss (Satoshis):</td>
                                                 <td>
-                                                    <span>${pl.loss}</span>
+                                                    <span class="highlightRed" v-if="pl.loss > 0">${pl.loss}</span>
+                                                    <span v-else>${pl.loss}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Loss Percentage :</td>
                                                 <td>
-                                                    <span>${pl.lossPercent}%</span>
+                                                    <span class="highlightRed" v-if="pl.lossPercent > 0">${pl.lossPercent}%</span>
+                                                    <span v-else>${pl.lossPercent}%</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Breakeven Price :</td>
+                                                <td>
+                                                    <span>${breakEvenPrice}</span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -175,7 +197,36 @@
                                 </div>
                             </div>
                             <!-- P&L ends-->
-
+                        </div>
+                        <div class="sectionContainer">
+                            <!-- Recommendations widget starts -->
+                            <div class="baseWidget">
+                                <div class="widgetSectionHeader">
+                                    <span class="headerTitle">Recommendations</span>
+                                </div>
+                                <div class="widgetContent">
+                                    <table class="skeletonGrid">
+                                        <tbody>
+                                            <tr>
+                                                <td v-for="recommendation in recommendations">
+                                                    <table class="dataGrid">
+                                                        <tr>
+                                                            <td colspan="2" style="text-align:center;">${recommendation.percent}%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Sell Price</td><td>${recommendation.price}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Yield</td><td>${recommendation.yield}</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- Recommendations widget ends-->
                         </div>
                     </div>
                     <!-- P&L Calculation widget ends -->
